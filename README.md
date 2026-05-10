@@ -11,7 +11,8 @@
 ## 使用方式
 
 ```bash
-cd /home/runner/work/network/network
+# 在仓库根目录执行
+cd <your-repo-path>/network
 CA_PASS=123456 bash ./scripts/run_experiment4.sh
 ```
 
