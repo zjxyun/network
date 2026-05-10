@@ -67,17 +67,13 @@ openssl req -new -x509 -days 3650 \
 
 echo "[3/5] 生成服务器私钥、CSR，并由根 CA 签发证书"
 openssl genrsa -out server.key 2048
-cat > server_ext.cnf <<EOF
-subjectAltName=DNS:${SERVER_CN},DNS:localhost,IP:127.0.0.1
-EOF
 openssl req -new -key server.key -out server.csr \
   -subj "${SERVER_SUBJ}" -addext "subjectAltName=DNS:${SERVER_CN},DNS:localhost,IP:127.0.0.1"
 
 openssl ca -batch -config openssl_ca.cnf \
   -in server.csr -out server.crt -days 365 \
   -cert ca/root_ca.crt -keyfile ca/private/root_ca.key \
-  -passin "pass:${CA_PASS}" -extensions usr_cert \
-  -extfile server_ext.cnf
+  -passin "pass:${CA_PASS}" -extensions usr_cert
 
 echo "[4/5] 证书验证与格式转换"
 openssl verify -CAfile ca/root_ca.crt server.crt
