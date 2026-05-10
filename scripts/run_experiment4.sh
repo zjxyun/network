@@ -1,15 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-LAB_DIR="${LAB_DIR:-/home/runner/work/network/network/pki_lab}"
-CA_PASS="${CA_PASS:-123456}"
+LAB_DIR="${LAB_DIR:-${PWD}/pki_lab}"
+CA_PASS="${CA_PASS:-}"
 SERVER_CN="${SERVER_CN:-www.testlab.com}"
+
+if [[ -z "${CA_PASS}" ]]; then
+  echo "ERROR: 请先设置 CA_PASS 环境变量。"
+  echo "示例：CA_PASS=123456 bash scripts/run_experiment4.sh"
+  exit 1
+fi
 
 ROOT_CA_SUBJ="/C=CN/ST=SC/L=CD/O=PKI_LAB_Security/OU=NetSec/CN=Root_CA/emailAddress=ca@pki.lab"
 SERVER_SUBJ="/C=CN/ST=SC/L=CD/O=PKI_LAB_Security/OU=NetSec/CN=${SERVER_CN}"
 
 echo "[1/5] 初始化实验目录：${LAB_DIR}"
-rm -rf "${LAB_DIR}"
+if [[ "${LAB_DIR}" == "/" || "${LAB_DIR}" == "/root" || "${LAB_DIR}" == "/home" ]]; then
+  echo "ERROR: LAB_DIR 目录不安全：${LAB_DIR}"
+  exit 1
+fi
+if [[ -d "${LAB_DIR}" ]]; then
+  rm -rf "${LAB_DIR}"
+fi
 mkdir -p "${LAB_DIR}"
 cd "${LAB_DIR}"
 

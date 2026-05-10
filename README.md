@@ -12,22 +12,22 @@
 
 ```bash
 cd /home/runner/work/network/network
-bash /home/runner/work/network/network/scripts/run_experiment4.sh
+CA_PASS=123456 bash ./scripts/run_experiment4.sh
 ```
 
 可选环境变量：
 
-- `LAB_DIR`：实验输出目录（默认：`/home/runner/work/network/network/pki_lab`）
-- `CA_PASS`：根 CA 私钥与 PFX 口令（默认：`123456`）
+- `LAB_DIR`：实验输出目录（默认：`$PWD/pki_lab`）
+- `CA_PASS`：根 CA 私钥与 PFX 口令（必填）
 - `SERVER_CN`：服务器证书 CN（默认：`www.testlab.com`）
 
 示例：
 
 ```bash
-LAB_DIR=/home/runner/work/network/network/pki_lab_demo \
+LAB_DIR=./pki_lab_demo \
 CA_PASS=123456 \
 SERVER_CN=www.testlab.com \
-bash /home/runner/work/network/network/scripts/run_experiment4.sh
+bash ./scripts/run_experiment4.sh
 ```
 
 ## 关键输出文件
