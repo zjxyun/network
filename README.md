@@ -13,7 +13,7 @@
 ```bash
 # 在仓库根目录执行
 cd <your-repo-path>/network
-CA_PASS=123456 bash ./scripts/run_experiment4.sh
+CA_PASS='Str0ng-Passw0rd!2026' bash ./scripts/run_experiment4.sh
 ```
 
 可选环境变量：
@@ -26,7 +26,7 @@ CA_PASS=123456 bash ./scripts/run_experiment4.sh
 
 ```bash
 LAB_DIR=./pki_lab_demo \
-CA_PASS=123456 \
+CA_PASS='Str0ng-Passw0rd!2026' \
 SERVER_CN=www.testlab.com \
 bash ./scripts/run_experiment4.sh
 ```

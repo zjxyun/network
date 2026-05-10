@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-LAB_DIR="${LAB_DIR:-${PWD}/pki_lab}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+LAB_DIR="${LAB_DIR:-${REPO_ROOT}/pki_lab}"
 CA_PASS="${CA_PASS:-}"
 SERVER_CN="${SERVER_CN:-www.testlab.com}"
 
 if [[ -z "${CA_PASS}" ]]; then
   echo "ERROR: 请先设置 CA_PASS 环境变量。"
-  echo "示例：CA_PASS=123456 bash scripts/run_experiment4.sh"
+  echo "示例：CA_PASS='Str0ng-Passw0rd!2026' bash scripts/run_experiment4.sh"
   exit 1
 fi
 
@@ -15,7 +18,11 @@ ROOT_CA_SUBJ="/C=CN/ST=SC/L=CD/O=PKI_LAB_Security/OU=NetSec/CN=Root_CA/emailAddr
 SERVER_SUBJ="/C=CN/ST=SC/L=CD/O=PKI_LAB_Security/OU=NetSec/CN=${SERVER_CN}"
 
 echo "[1/5] 初始化实验目录：${LAB_DIR}"
-if [[ "${LAB_DIR}" == "/" || "${LAB_DIR}" == "/root" || "${LAB_DIR}" == "/home" ]]; then
+if [[ "${LAB_DIR}" != "${REPO_ROOT}/"* ]]; then
+  echo "ERROR: LAB_DIR 必须位于仓库目录下：${REPO_ROOT}"
+  exit 1
+fi
+if [[ "${LAB_DIR}" == "/" || "${LAB_DIR}" == "/root" || "${LAB_DIR}" == "/home" || "${LAB_DIR}" == "${REPO_ROOT}" ]]; then
   echo "ERROR: LAB_DIR 目录不安全：${LAB_DIR}"
   exit 1
 fi
